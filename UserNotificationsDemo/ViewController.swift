@@ -14,6 +14,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
         //1. REQUEST AUTHORIZATION FOR USER NOTIFICATIONS FROM USER
         /* we call the requestAuthorization method of the notification center to ask the user’s permission for using notification. We also request the ability to display alerts and play sounds. */
         
