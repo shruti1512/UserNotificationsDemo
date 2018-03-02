@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import UserNotifications
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -16,6 +17,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        
+        UNUserNotificationCenter.current().delegate = self
+        configureUserNotification()
         return true
     }
 
@@ -41,6 +45,36 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
-
+    //TO ADD ACTION BUTTONS ON THE NOTIFICATION
+    func configureUserNotification() {
+        
+        let fistBumpAction = UNNotificationAction(identifier: "fistBump", title: "FistBump", options: [])
+        let dismissAction = UNNotificationAction(identifier: "dismiss", title: "Dismiss", options: [])
+        
+        let category = UNNotificationCategory(identifier: "myNotificationCategory", actions: [fistBumpAction, dismissAction], intentIdentifiers: [], options: [])
+        UNUserNotificationCenter.current().setNotificationCategories([category])
+        
+    }
 }
+
+extension AppDelegate: UNUserNotificationCenterDelegate {
+    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive response: UNNotificationResponse, withCompletionHandler completionHandler: @escaping () -> Void) {
+        
+        print("Response recieved for action: \(response.actionIdentifier)")
+        completionHandler()
+        
+    }
+    
+    //Called on the delegate only if the application is in the foreground.    
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent notification: UNNotification, withCompletionHandler completionHandler: @escaping (UNNotificationPresentationOptions) -> Void) {
+        completionHandler(.alert)
+    }
+}
+
+
+
+
+
+
 
